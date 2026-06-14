@@ -1,6 +1,6 @@
 services:
   frontend:
-    image: 14790897/frontend-handwriting:latest
+    image: ghcr.io/northeast18/handwriting-web/frontend:latest
     labels:
       - com.centurylinklabs.watchtower.enable=true
     ports:
@@ -15,7 +15,7 @@ services:
 
 
   backend:
-    image: 14790897/backend-handwriting:latest
+    image: ghcr.io/northeast18/handwriting-web/backend:latest
     labels:
       - com.centurylinklabs.watchtower.enable=true
     ports:

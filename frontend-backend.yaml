@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: 14790897/backend-handwriting:latest
+        image: ghcr.io/northeast18/handwriting-web/backend:latest
         ports:
         - containerPort: 5000
         volumeMounts:
@@ -86,7 +86,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: 14790897/frontend-handwriting:latest
+        image: ghcr.io/northeast18/handwriting-web/frontend:latest
         ports:
         - containerPort: 80
         resources:

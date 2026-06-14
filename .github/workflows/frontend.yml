@@ -6,6 +6,11 @@ on:
       - main
     paths:
       - "frontend/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
 
 jobs:
   build-and-push:
@@ -18,11 +23,12 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Login to Docker Hub
+      - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and Push web Image
         uses: docker/build-push-action@v5
@@ -30,18 +36,5 @@ jobs:
           context: ./frontend
           file: ./frontend/dockerfile.frontend
           push: true
-          tags: 14790897/frontend-handwriting:latest
+          tags: ghcr.io/${{ github.repository }}/frontend:latest
           platforms: linux/amd64,linux/arm64
-
-  # release-please-frontend:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: google-github-actions/release-please-action@v2
-  #       with:
-  #         token: ${{ secrets.GH_TOKEN }}
-  #         release-type: node
-  #         package-name: handwriting-frontend
-  #         path: ./frontend
-permissions:
-  contents: write
