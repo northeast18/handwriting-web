@@ -55,20 +55,32 @@
         </div>
       </div>
 
-      <div c lass="label-container">
- 
-        <label>{{ $t('message.width') }}:
-          <input type="number" v-model="width" :disabled="isBackgroundImageSpecified"
-            :title="isBackgroundImageSpecified ? $t('message.backgroundImageSpecified') : ''" />
+      <div class="label-container">
+        <label>{{ $t('message.paperSize') }}:
+          <select v-model="paperSize" class="styled-select" :disabled="isBackgroundImageSpecified" style="width: 50%;">
+            <option value="A4">{{ $t('message.paperSizeA4') }}</option>
+            <option value="A5">{{ $t('message.paperSizeA5') }}</option>
+            <option value="B4">{{ $t('message.paperSizeB4') }}</option>
+            <option value="B5">{{ $t('message.paperSizeB5') }}</option>
+            <option value="16K">{{ $t('message.paperSize16K') }}</option>
+            <option value="custom">{{ $t('message.paperSizeCustom') }}</option>
+          </select>
         </label>
       </div>
 
+      <div class="label-container">
+        <label>{{ $t('message.width') }}:
+          <input type="number" step="0.01" v-model.number="widthCm" :disabled="isBackgroundImageSpecified"
+            :title="isBackgroundImageSpecified ? $t('message.backgroundImageSpecified') : ''" />
+          <span style="margin-left: 5px;">{{ $t('message.cm') }}</span>
+        </label>
+      </div>
 
       <div class="label-container">
-
         <label>{{ $t('message.height') }}:
-          <input type="number" v-model="height" :disabled="isBackgroundImageSpecified"
+          <input type="number" step="0.01" v-model.number="heightCm" :disabled="isBackgroundImageSpecified"
             :title="isBackgroundImageSpecified ? $t('message.backgroundImageSpecified') : ''" />
+          <span style="margin-left: 5px;">{{ $t('message.cm') }}</span>
         </label>
         <button type="button" class="close" aria-label="Close" @click="clearDimensions">
           <span aria-hidden="true">&times;</span>
@@ -84,39 +96,55 @@
       <label for="optionEnglishSpacing" style="margin-right: 0px;">{{ $t('message.enableEnglishSpacing') }}</label>
 
       <div class="label-container">
+        <label>{{ $t('message.chineseFontSizeLabel') }}:
+          <select v-model="chineseFontSize" class="styled-select" style="width: 50%;">
+            <option v-for="preset in chineseFontPresets" :value="preset.pt" :key="preset.pt">
+              {{ preset.text }}
+            </option>
+            <option value="custom">{{ $t('message.chineseFontSizeCustom') }}</option>
+          </select>
+        </label>
+      </div>
 
+      <div class="label-container">
         <label>{{ $t('message.fontSize') }}:
-          <input type="number" v-model="fontSize" placeholder="recommend > 100" />
+          <input type="number" step="0.1" v-model.number="fontSizePt" />
+          <span style="margin-left: 5px;">{{ $t('message.pt') }}</span>
         </label>
       </div>
 
       <div class="label-container">
         <label>{{ $t('message.lineSpacing') }}:
-          <input type="number" v-model="lineSpacing" />
+          <input type="number" step="0.01" v-model.number="lineSpacingCm" />
+          <span style="margin-left: 5px;">{{ $t('message.cm') }}</span>
         </label>
       </div>
 
       <div class="label-container">
         <label>{{ $t('message.topMargin') }}:
-          <input type="number" v-model="marginTop" />
+          <input type="number" step="0.01" v-model.number="marginTopCm" />
+          <span style="margin-left: 5px;">{{ $t('message.cm') }}</span>
         </label>
       </div>
 
       <div class="label-container">
         <label>{{ $t('message.bottomMargin') }}:
-          <input type="number" v-model="marginBottom" />
+          <input type="number" step="0.01" v-model.number="marginBottomCm" />
+          <span style="margin-left: 5px;">{{ $t('message.cm') }}</span>
         </label>
       </div>
 
       <div class="label-container">
         <label>{{ $t('message.leftMargin') }}:
-          <input type="number" v-model="marginLeft" />
+          <input type="number" step="0.01" v-model.number="marginLeftCm" />
+          <span style="margin-left: 5px;">{{ $t('message.cm') }}</span>
         </label>
       </div>
 
       <div class="label-container">
         <label>{{ $t('message.rightMargin') }}:
-          <input type="number" v-model="marginRight" />
+          <input type="number" step="0.01" v-model.number="marginRightCm" />
+          <span style="margin-left: 5px;">{{ $t('message.cm') }}</span>
         </label>
       </div>
       <!-- 这是一个按钮，用户点击这个按钮时，会展开或折叠下面的内容区域 -->
@@ -129,81 +157,90 @@
         <div class="card card-body">
           <div class="label-container">
             <label>{{ $t('message.lineSpacingSigma') }}:
-              <input type="number" v-model="lineSpacingSigma" />
+              <input type="number" step="0.001" v-model.number="lineSpacingSigmaCm" />
+              <span style="margin-left: 5px;">{{ $t('message.cm') }}</span>
             </label>
           </div>
 
           <div class="label-container">
             <label>{{ $t('message.fontSizeSigma') }}:
-              <input type="number" v-model="fontSizeSigma" />
+              <input type="number" step="0.1" v-model.number="fontSizeSigmaPt" />
+              <span style="margin-left: 5px;">{{ $t('message.pt') }}</span>
             </label>
           </div>
 
           <div class="label-container">
             <label>{{ $t('message.wordSpacingSigma') }}:
-              <input type="number" v-model="wordSpacingSigma" />
+              <input type="number" step="0.001" v-model.number="wordSpacingSigmaCm" />
+              <span style="margin-left: 5px;">{{ $t('message.cm') }}</span>
             </label>
           </div>
 
           <div class="label-container">
             <label>{{ $t('message.perturbXSigma') }}:
-              <input type="number" v-model="perturbXSigma" />
+              <input type="number" step="0.001" v-model.number="perturbXSigmaCm" />
+              <span style="margin-left: 5px;">{{ $t('message.cm') }}</span>
             </label>
           </div>
 
           <div class="label-container">
             <label>{{ $t('message.perturbYSigma') }}:
-              <input type="number" v-model="perturbYSigma" />
+              <input type="number" step="0.001" v-model.number="perturbYSigmaCm" />
+              <span style="margin-left: 5px;">{{ $t('message.cm') }}</span>
             </label>
           </div>
 
           <div class="label-container">
             <label>{{ $t('message.perturbThetaSigma') }}:
-              <input type="number" v-model="perturbThetaSigma" />
+              <input type="number" step="0.01" v-model.number="perturbThetaSigmaDeg" />
+              <span style="margin-left: 5px;">度 (°)</span>
             </label>
           </div>
 
           <div class="label-container">
             <label>{{ $t('message.wordSpacing') }}:
-              <input type="number" v-model="wordSpacing" />
+              <input type="number" step="0.001" v-model.number="wordSpacingCm" />
+              <span style="margin-left: 5px;">{{ $t('message.cm') }}</span>
             </label>
           </div>
 
-
-
           <div class="label-container">
             <label>{{ $t('message.strikethrough_length_sigma') }}:
-              <input type="text" v-model="strikethrough_length_sigma" />
+              <input type="number" step="0.001" v-model.number="strikethroughLengthSigmaCm" />
+              <span style="margin-left: 5px;">{{ $t('message.cm') }}</span>
             </label>
           </div>
 
           <div class='label-container'>
             <label>{{ $t('message.strikethrough_angle_sigma') }}:
-              <input type="number" v-model="strikethrough_angle_sigma" />
+              <input type="number" step="0.1" v-model.number="strikethrough_angle_sigma" />
+              <span style="margin-left: 5px;">度 (°)</span>
             </label>
           </div>
 
           <div class='label-container'>
             <label>{{ $t('message.strikethrough_width_sigma') }}:
-              <input type="number" v-model="strikethrough_width_sigma" />
+              <input type="number" step="0.001" v-model.number="strikethroughWidthSigmaCm" />
+              <span style="margin-left: 5px;">{{ $t('message.cm') }}</span>
             </label>
           </div>
 
           <div class='label-container'>
             <label>{{ $t('message.strikethrough_probability') }}:
-              <input type="number" v-model="strikethrough_probability" />
+              <input type="number" step="0.001" v-model.number="strikethrough_probability" />
             </label>
           </div>
 
           <div class='label-container'>
             <label>{{ $t('message.strikethrough_width') }}:
-              <input type="number" v-model="strikethrough_width" />
+              <input type="number" step="0.001" v-model.number="strikethroughWidthCm" />
+              <span style="margin-left: 5px;">{{ $t('message.cm') }}</span>
             </label>
           </div>
 
           <div class='label-container'>
             <label>{{ $t('message.ink_depth_sigma') }}:
-              <input type="number" v-model="ink_depth_sigma" />
+              <input type="number" step="1" v-model.number="ink_depth_sigma" />
             </label>
           </div>
         </div>
@@ -365,6 +402,24 @@ export default {
       queueFullTotal: 0,            // 初始等待秒数，用于计算进度条
       queueFullTimer: null,         // setInterval 句柄
       enableFullPreview: false,
+      chineseFontPresets: [
+        { text: '初号 (42pt)', pt: 42 },
+        { text: '小初 (36pt)', pt: 36 },
+        { text: '一号 (26pt)', pt: 26 },
+        { text: '小一 (24pt)', pt: 24 },
+        { text: '二号 (22pt)', pt: 22 },
+        { text: '小二 (18pt)', pt: 18 },
+        { text: '三号 (16pt)', pt: 16 },
+        { text: '小三 (15pt)', pt: 15 },
+        { text: '四号 (14pt)', pt: 14 },
+        { text: '小四 (12pt)', pt: 12 },
+        { text: '五号 (10.5pt)', pt: 10.5 },
+        { text: '小五 (9pt)', pt: 9 },
+        { text: '六号 (7.5pt)', pt: 7.5 },
+        { text: '小六 (6.5pt)', pt: 6.5 },
+        { text: '七号 (5.5pt)', pt: 5.5 },
+        { text: '八号 (5pt)', pt: 5 },
+      ],
       localStorageItems: ['text', 'fontFile', 'fontSize', 'lineSpacing', 'fill', 'width', 'height', 'marginTop', 'marginBottom', 'marginLeft', 'marginRight', 'selectedFontFileName', 'selectedOption', 'lineSpacingSigma', 'fontSizeSigma', 'wordSpacingSigma', 'perturbXSigma', 'perturbYSigma', 'perturbThetaSigma', 'wordSpacing', 'strikethrough_length_sigma', 'strikethrough_angle_sigma', 'strikethrough_width_sigma', 'strikethrough_probability', 'strikethrough_width', 'ink_depth_sigma', 'isUnderlined', 'enableEnglishSpacing'],
     };
   },
@@ -435,6 +490,205 @@ export default {
     },
     isDevEnv() {
       return process.env.NODE_ENV === 'development';
+    },
+
+    // 纸张尺寸选择器
+    paperSize: {
+      get() {
+        if (this.width === 2481 && this.height === 3507) return 'A4';
+        if (this.width === 1748 && this.height === 2480) return 'A5';
+        if (this.width === 2953 && this.height === 4169) return 'B4';
+        if (this.width === 2079 && this.height === 2953) return 'B5';
+        if (this.width === 2185 && this.height === 3071) return '16K';
+        return 'custom';
+      },
+      set(val) {
+        if (val === 'A4') {
+          this.width = 2481;
+          this.height = 3507;
+        } else if (val === 'A5') {
+          this.width = 1748;
+          this.height = 2480;
+        } else if (val === 'B4') {
+          this.width = 2953;
+          this.height = 4169;
+        } else if (val === 'B5') {
+          this.width = 2079;
+          this.height = 2953;
+        } else if (val === '16K') {
+          this.width = 2185;
+          this.height = 3071;
+        }
+      }
+    },
+
+    // 页面物理尺寸与边距双向转换 (厘米 cm)
+    // 300 DPI 时：1 cm = 300 / 2.54 = 118.1102 px
+    widthCm: {
+      get() {
+        return this.width ? parseFloat((this.width * 2.54 / 300).toFixed(2)) : '';
+      },
+      set(val) {
+        this.width = val ? Math.round(parseFloat(val) * 300 / 2.54) : null;
+      }
+    },
+    heightCm: {
+      get() {
+        return this.height ? parseFloat((this.height * 2.54 / 300).toFixed(2)) : '';
+      },
+      set(val) {
+        this.height = val ? Math.round(parseFloat(val) * 300 / 2.54) : null;
+      }
+    },
+
+    // 边距双向转换 (厘米 cm)
+    marginTopCm: {
+      get() {
+        return this.marginTop ? parseFloat((this.marginTop * 2.54 / 300).toFixed(2)) : '';
+      },
+      set(val) {
+        this.marginTop = val ? Math.round(parseFloat(val) * 300 / 2.54) : null;
+      }
+    },
+    marginBottomCm: {
+      get() {
+        return this.marginBottom ? parseFloat((this.marginBottom * 2.54 / 300).toFixed(2)) : '';
+      },
+      set(val) {
+        this.marginBottom = val ? Math.round(parseFloat(val) * 300 / 2.54) : null;
+      }
+    },
+    marginLeftCm: {
+      get() {
+        return this.marginLeft ? parseFloat((this.marginLeft * 2.54 / 300).toFixed(2)) : '';
+      },
+      set(val) {
+        this.marginLeft = val ? Math.round(parseFloat(val) * 300 / 2.54) : null;
+      }
+    },
+    marginRightCm: {
+      get() {
+        return this.marginRight ? parseFloat((this.marginRight * 2.54 / 300).toFixed(2)) : '';
+      },
+      set(val) {
+        this.marginRight = val ? Math.round(parseFloat(val) * 300 / 2.54) : null;
+      }
+    },
+
+    // 行间距转换 (厘米 cm)
+    lineSpacingCm: {
+      get() {
+        return this.lineSpacing ? parseFloat((this.lineSpacing * 2.54 / 300).toFixed(2)) : '';
+      },
+      set(val) {
+        this.lineSpacing = val ? Math.round(parseFloat(val) * 300 / 2.54) : null;
+      }
+    },
+
+    // 字号下拉选项 (对应 Word 字号)
+    chineseFontSize: {
+      get() {
+        const currentPt = Math.round(this.fontSize * 72 / 300);
+        const matched = this.chineseFontPresets.find(p => Math.abs(p.pt - currentPt) < 0.2);
+        return matched ? String(matched.pt) : 'custom';
+      },
+      set(val) {
+        if (val !== 'custom') {
+          const pt = parseFloat(val);
+          this.fontSize = Math.round(pt * 300 / 72);
+        }
+      }
+    },
+
+    // 字体大小 (磅 pt)
+    fontSizePt: {
+      get() {
+        return this.fontSize ? parseFloat((this.fontSize * 72 / 300).toFixed(1)) : '';
+      },
+      set(val) {
+        this.fontSize = val ? Math.round(parseFloat(val) * 300 / 72) : null;
+      }
+    },
+
+    lineSpacingSigmaCm: {
+      get() {
+        return typeof this.lineSpacingSigma === 'number' ? parseFloat((this.lineSpacingSigma * 2.54 / 300).toFixed(3)) : 0;
+      },
+      set(val) {
+        this.lineSpacingSigma = val ? Math.round(parseFloat(val) * 300 / 2.54) : 0;
+      }
+    },
+    fontSizeSigmaPt: {
+      get() {
+        return typeof this.fontSizeSigma === 'number' ? parseFloat((this.fontSizeSigma * 72 / 300).toFixed(1)) : 0;
+      },
+      set(val) {
+        this.fontSizeSigma = val ? Math.round(parseFloat(val) * 300 / 72) : 0;
+      }
+    },
+    wordSpacingSigmaCm: {
+      get() {
+        return typeof this.wordSpacingSigma === 'number' ? parseFloat((this.wordSpacingSigma * 2.54 / 300).toFixed(3)) : 0;
+      },
+      set(val) {
+        this.wordSpacingSigma = val ? Math.round(parseFloat(val) * 300 / 2.54) : 0;
+      }
+    },
+    perturbXSigmaCm: {
+      get() {
+        return typeof this.perturbXSigma === 'number' ? parseFloat((this.perturbXSigma * 2.54 / 300).toFixed(3)) : 0;
+      },
+      set(val) {
+        this.perturbXSigma = val ? Math.round(parseFloat(val) * 300 / 2.54) : 0;
+      }
+    },
+    perturbYSigmaCm: {
+      get() {
+        return typeof this.perturbYSigma === 'number' ? parseFloat((this.perturbYSigma * 2.54 / 300).toFixed(3)) : 0;
+      },
+      set(val) {
+        this.perturbYSigma = val ? Math.round(parseFloat(val) * 300 / 2.54) : 0;
+      }
+    },
+    perturbThetaSigmaDeg: {
+      get() {
+        return typeof this.perturbThetaSigma === 'number' ? parseFloat((this.perturbThetaSigma * 180 / Math.PI).toFixed(2)) : 0;
+      },
+      set(val) {
+        this.perturbThetaSigma = val ? parseFloat((parseFloat(val) * Math.PI / 180).toFixed(4)) : 0;
+      }
+    },
+    wordSpacingCm: {
+      get() {
+        return typeof this.wordSpacing === 'number' ? parseFloat((this.wordSpacing * 2.54 / 300).toFixed(3)) : 0;
+      },
+      set(val) {
+        this.wordSpacing = val ? Math.round(parseFloat(val) * 300 / 2.54) : 0;
+      }
+    },
+    strikethroughLengthSigmaCm: {
+      get() {
+        return typeof this.strikethrough_length_sigma === 'number' ? parseFloat((this.strikethrough_length_sigma * 2.54 / 300).toFixed(3)) : 0;
+      },
+      set(val) {
+        this.strikethrough_length_sigma = val ? Math.round(parseFloat(val) * 300 / 2.54) : 0;
+      }
+    },
+    strikethroughWidthCm: {
+      get() {
+        return typeof this.strikethrough_width === 'number' ? parseFloat((this.strikethrough_width * 2.54 / 300).toFixed(3)) : 0;
+      },
+      set(val) {
+        this.strikethrough_width = val ? Math.round(parseFloat(val) * 300 / 2.54) : 0;
+      }
+    },
+    strikethroughWidthSigmaCm: {
+      get() {
+        return typeof this.strikethrough_width_sigma === 'number' ? parseFloat((this.strikethrough_width_sigma * 2.54 / 300).toFixed(3)) : 0;
+      },
+      set(val) {
+        this.strikethrough_width_sigma = val ? Math.round(parseFloat(val) * 300 / 2.54) : 0;
+      }
     },
 
     //vuex中的login_delete_message，下面使用watch监控这个值  7.13
