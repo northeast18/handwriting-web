@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/northeast18/handwriting-web/compare/v1.0.1...v1.1.0) (2026-06-14)
+
+
+### Features
+
+* **ci/cd:** route docker image builds and deployments to ghcr.io container registry ([7cbc077](https://github.com/northeast18/handwriting-web/commit/7cbc0774c5635cde191595da6bf31c6e2903502e))
+
 ## [1.0.1](https://github.com/northeast18/handwriting-web/compare/v1.0.0...v1.0.1) (2026-06-14)
 
 
