@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/northeast18/handwriting-web/compare/v1.0.0...v1.0.1) (2026-06-14)
+
+
+### Bug Fixes
+
+* **ci:** disable PR comments and labels in semantic-release to prevent 404 error on fork ([4aeb3c3](https://github.com/northeast18/handwriting-web/commit/4aeb3c383512a7aa8811297524f12d4ae0883662))
+
 # 1.0.0 (2026-06-14)
 
 
