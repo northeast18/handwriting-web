@@ -8,6 +8,9 @@ module.exports = {
       "@semantic-release/github", // 发布到 GitHub，生成 Release
       {
         assets: ["dist/**/*.{js,css}", "docs/**/*"], // 可发布的构建文件
+        successComment: false,
+        failComment: false,
+        releasedLabels: false,
       },
     ],
     [
